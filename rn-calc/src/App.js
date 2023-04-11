@@ -11,6 +11,8 @@ export default function App() {
         color={'red'}
         onPress={() => console.log('click!')}
       />
+      <Button />
+      {/* default props를 설정해서 title을 적지 않아도 오류가 뜨지 않음 */}
       <StatusBar style="auto" />
     </View>
   );

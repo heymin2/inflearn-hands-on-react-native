@@ -1,11 +1,17 @@
 import { Text } from 'react-native';
+import PropTypes from 'prop-types';
 
-const Button = (props) => {
-  return <Text>{props.title}</Text>;
+const Button = ({ title }) => {
+  return <Text>{title}</Text>;
+};
+
+Button.defaultProps = {
+  title: 'Default',
+};
+// props의 값을 전달하지 않더라도 문제가 되지 않거나 우리가 원하는 특정 값으로 나타나길 원하는 경우
+Button.PropTypes = {
+  title: PropTypes.string.isRequired,
+  //   설정한 타입으로 지정되지 않은 경우, 오류가 뜬다. isRequired의 경우 지정되지 않은 경우 오류가 뜬다.
 };
 
 export default Button;
-
-// 우리가 만든 버튼에 props가 없어서 App.js의 Button에 있는 color, onPress 적용x
-// props.title로 해주면 App.js에 있는 title인 button 글자가 <Text> 태그에 적용
-// 그럼 color, onPress는 어떻게 적용?
