@@ -1,17 +1,34 @@
-import { Text } from 'react-native';
+import { Pressable, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 const Button = ({ title }) => {
-  return <Text>{title}</Text>;
+  return (
+    <Pressable
+      onPressIn={() => console.log('In')}
+      onPressOut={() => console.log('Out')}
+      onPress={() => console.log('onPress')}
+      onLongPress={() => console.log('Long')}
+      delayLongPress={2000}
+      //   2초 눌러야 Long 나옴
+      style={({ pressed }) => [
+        { backgroundColor: 'red' },
+        pressed && { backgroundColor: 'orange', opacity: 0.3 },
+      ]}
+    >
+      <Text>{title}</Text>
+    </Pressable>
+  );
 };
 
 Button.defaultProps = {
   title: 'Default',
 };
-// props의 값을 전달하지 않더라도 문제가 되지 않거나 우리가 원하는 특정 값으로 나타나길 원하는 경우
-Button.PropTypes = {
+Button.propTypes = {
   title: PropTypes.string.isRequired,
-  //   설정한 타입으로 지정되지 않은 경우, 오류가 뜬다. isRequired의 경우 지정되지 않은 경우 오류가 뜬다.
 };
 
 export default Button;
+
+// 1. TouchableOpacity => 터치시 흐려짐
+// 2. TouchableHighlight => 터치시 배경색 변경, underlayColor로 색 변경
+// 3. Pressable => 터치시 아무 반응x
