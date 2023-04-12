@@ -1,18 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import Button from './components/Button';
+import Button, { ButtonTypes } from './components/Button';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>rn-calc App</Text>
       <Button
-        title="button"
-        color={'red'}
-        onPress={() => console.log('click!')}
+        title="1"
+        onPress={() => {}}
+        buttonStyle={{ width: 100, height: 100 }}
+        buttonType={ButtonTypes.NUMBER}
       />
-      <Button />
-      {/* default props를 설정해서 title을 적지 않아도 오류가 뜨지 않음 */}
+      <Button
+        title="0"
+        onPress={() => {}}
+        buttonStyle={{ width: 200, height: 100 }}
+        buttonType={ButtonTypes.NUMBER}
+      />
+      <Button
+        title="="
+        onPress={() => {}}
+        buttonStyle={{ width: 100, height: 100 }}
+        buttonType={ButtonTypes.OPERATOR}
+      />
       <StatusBar style="auto" />
     </View>
   );
