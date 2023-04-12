@@ -11,7 +11,12 @@ export default function App() {
       <Button
         title="+"
         onPress={() => {
-          setResult(result + 1);
+          setResult((prev) => {
+            return prev + 1;
+          });
+          setResult((prev) => {
+            return prev + 1;
+          });
         }}
         buttonStyle={{ width: 100, height: 100, marginBottom: 10 }}
         buttonType={ButtonTypes.OPERATOR}
