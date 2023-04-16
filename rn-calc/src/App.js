@@ -13,12 +13,15 @@ const Operators = {
 export default function App() {
   const [result, setResult] = useState(0);
   const width = (useWindowDimensions().width - 5) / 4;
-  console.log(width);
+  const onPressNumber = (num) => {
+    setResult((prev) => prev * 10 + num);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
       <View style={styles.resultContainer}>
-        <Text style={styles.result}>{result}</Text>
+        <Text style={styles.result}>{result.toLocaleString()}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.leftPad}>
@@ -27,7 +30,7 @@ export default function App() {
               <Button
                 key={num}
                 title={num.toString()}
-                onPress={() => {}}
+                onPress={() => onPressNumber(num)}
                 buttonStyle={{ width: width, height: width, marginTop: 1 }}
               />
             ))}
@@ -35,7 +38,7 @@ export default function App() {
           <View style={styles.bottom}>
             <Button
               title="0"
-              onPress={() => {}}
+              onPress={() => onPressNumber(0)}
               buttonStyle={{ width: width * 2, height: width }}
             />
             <Button
