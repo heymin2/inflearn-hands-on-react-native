@@ -23,27 +23,26 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
-  },
-  text: {
-    fontSize: 30,
-    fontWeight: '700',
-    color: 'blue',
   },
   resultContainer: {
     flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
     backgroundColor: '#000000',
   },
   buttonContainer: {
-    flex: 2,
+    flex: 1,
     backgroundColor: 'skyblue',
   },
   result: {
     color: '#ffffff',
     fontSize: 60,
     fontWeight: '700',
+    paddingBottom: 30,
+    paddingRight: 30,
   },
 });
