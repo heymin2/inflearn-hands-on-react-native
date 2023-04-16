@@ -12,9 +12,47 @@ const Operators = {
 
 export default function App() {
   const [result, setResult] = useState(0);
+  const [formula, setFormula] = useState([]);
+  console.log(formula);
   const width = (useWindowDimensions().width - 5) / 4;
+
   const onPressNumber = (num) => {
-    setResult((prev) => prev * 10 + num);
+    const last = formula[formula.length - 1];
+
+    if (isNaN(last)) {
+      setResult(num);
+      setFormula((prev) => [...prev, num]);
+    } else {
+      const newNumber = (last ?? 0) * 10 + num;
+      setResult(newNumber);
+      setFormula((prev) => {
+        prev.pop();
+        return [...prev, newNumber];
+      });
+    }
+  };
+
+  const onPressOperator = (operator) => {
+    switch (operator) {
+      case Operators.CLEAR:
+        setResult(0);
+        setFormula([]);
+        break;
+      case Operators.EQUAL:
+        break;
+      default: {
+        const last = formula[formula.length - 1];
+        if ([Operators.PLUS, Operators.MINUS].includes(last)) {
+          setFormula((prev) => {
+            prev.pop();
+            return [...prev, operator];
+          });
+        } else {
+          setFormula((prev) => [...prev, operator]);
+        }
+        break;
+      }
+    }
   };
 
   return (
@@ -42,8 +80,8 @@ export default function App() {
               buttonStyle={{ width: width * 2, height: width }}
             />
             <Button
-              title="="
-              onPress={() => {}}
+              title={Operators.EQUAL}
+              onPress={() => onPressOperator(Operators.EQUAL)}
               buttonStyle={{ width, height: width }}
               buttonType={ButtonTypes.OPERATOR}
             />
@@ -52,19 +90,19 @@ export default function App() {
         <View style={styles.operator}>
           <Button
             title={Operators.CLEAR}
-            OnPress={() => {}}
+            onPress={() => onPressOperator(Operators.CLEAR)}
             buttonStyle={{ width, height: width, marginBottom: 1 }}
             buttonType={ButtonTypes.OPERATOR}
           />
           <Button
             title={Operators.MINUS}
-            OnPress={() => {}}
+            onPress={() => onPressOperator(Operators.MINUS)}
             buttonStyle={{ width, height: width, marginBottom: 1 }}
             buttonType={ButtonTypes.OPERATOR}
           />
           <Button
             title={Operators.PLUS}
-            OnPress={() => {}}
+            onPress={() => onPressOperator(Operators.PLUS)}
             buttonStyle={{ width, height: width * 2, marginBottom: 1 }}
             buttonType={ButtonTypes.OPERATOR}
           />
