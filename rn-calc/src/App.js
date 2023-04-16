@@ -7,15 +7,13 @@ export default function App() {
   const [result, setResult] = useState(0);
   return (
     <View style={styles.container}>
+      <StatusBar style="light" />
       <View style={styles.resultContainer}>
-        {/* 결과 */}
         <Text style={styles.result}>{result}</Text>
       </View>
       <View style={styles.buttonContainer}>
-        {/* 버튼 */}
         <Text>button</Text>
       </View>
-      <StatusBar style="auto" />
     </View>
   );
 }
