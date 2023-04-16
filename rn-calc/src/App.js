@@ -12,7 +12,11 @@ export default function App() {
         <Text style={styles.result}>{result}</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <Text>button</Text>
+        <View style={styles.leftPad}>
+          <View style={styles.number}></View>
+          <View style={styles.bottom}></View>
+        </View>
+        <View style={styles.operator}></View>
       </View>
     </View>
   );
@@ -34,6 +38,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+    flexDirection: 'row',
     backgroundColor: 'skyblue',
   },
   result: {
@@ -43,4 +48,10 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingRight: 30,
   },
+  leftPad: {},
+  number: {},
+  bottom: {
+    flexDirection: 'row',
+  },
+  operator: {},
 });
