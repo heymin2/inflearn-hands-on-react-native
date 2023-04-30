@@ -44,7 +44,7 @@ Input.defaultProps = {
   returnKeyType: ReturnKeyTypes.DONE,
 };
 
-Input.PropTypes = {
+Input.propTypes = {
   title: PropTypes.string,
   placeholder: PropTypes.string,
   //   keyboardType: PropTypes.oneOf(Object.values(KeyboardTypes)),
