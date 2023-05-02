@@ -5,14 +5,18 @@ import Input, {
   ReturnKeyTypes,
 } from '../components/Input';
 import SafeInputView from '../components/SafeInputView';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Button';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const passwordRef = useRef(null);
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    setDisabled(!email || !password);
+  }, [email, password]);
 
   const onSubmit = () => {
     if (!disabled) {
