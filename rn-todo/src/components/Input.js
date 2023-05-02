@@ -1,8 +1,8 @@
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { BLACK, GRAY, PRIMARY } from '../color';
 import { forwardRef, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { GRAY, BLACK, PRIMARY } from '../color';
 
 export const KeyboardTypes = {
   DEFAULT: 'default',
@@ -22,6 +22,7 @@ export const IconNames = {
 const Input = forwardRef(
   ({ title, placeholder, value, iconName, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
+
     return (
       <View style={styles.container}>
         <Text
@@ -33,10 +34,12 @@ const Input = forwardRef(
         >
           {title}
         </Text>
+
         <View>
           <TextInput
             ref={ref}
-            {...props} // 제일 위에 둬야함. 덮어써지지 않아야함
+            {...props}
+            value={value}
             style={[
               styles.input,
               value && styles.hasValueInput,
@@ -51,6 +54,7 @@ const Input = forwardRef(
             onBlur={() => setIsFocused(false)}
             onFocus={() => setIsFocused(true)}
           />
+
           <View style={styles.icon}>
             <MaterialCommunityIcons
               name={iconName}
@@ -72,7 +76,6 @@ const Input = forwardRef(
     );
   }
 );
-
 Input.displayName = 'Input';
 
 Input.defaultProps = {
@@ -93,8 +96,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   title: {
-    color: GRAY.DEFAULT,
     marginBottom: 4,
+    color: GRAY.DEFAULT,
   },
   focusedTitle: {
     fontWeight: '600',
