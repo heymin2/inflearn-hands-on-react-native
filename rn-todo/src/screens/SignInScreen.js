@@ -1,4 +1,4 @@
-import { StyleSheet, Image, View, Keyboard } from 'react-native';
+import { StyleSheet, Image, View, Keyboard, Alert } from 'react-native';
 import Input, {
   IconNames,
   KeyboardTypes,
@@ -27,10 +27,15 @@ const SignInScreen = () => {
       try {
         const data = await signIn(email, password);
         console.log(data);
+        setIsLoading(false);
       } catch (e) {
-        console.log(e);
+        Alert.alert('SignIn Failed', e, [
+          {
+            text: 'Ok',
+            onPress: () => setIsLoading(false),
+          },
+        ]);
       }
-      setIsLoading(false);
     }
   };
 
