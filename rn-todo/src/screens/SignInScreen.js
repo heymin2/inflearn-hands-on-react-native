@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Button';
 import { signIn } from '../api/auth';
 
-const SignInScreen = () => {
+const SignInScreen = ({ navigation, route }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const passwordRef = useRef(null);
@@ -28,6 +28,7 @@ const SignInScreen = () => {
         const data = await signIn(email, password);
         console.log(data);
         setIsLoading(false);
+        navigation.push('List');
       } catch (e) {
         Alert.alert('SignIn Failed', e, [
           {
