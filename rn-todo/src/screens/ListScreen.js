@@ -1,19 +1,9 @@
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
-const ListScreen = ({ navigation, route }) => {
-  console.log(route.params);
+const ListScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 30 }}>ListScreen</Text>
-
-      <Button
-        title="push"
-        onPress={() => navigation.push('List', { ts: Date.now() })}
-      ></Button>
-      <Button
-        title="navigate"
-        onPress={() => navigation.navigate('List', { ts: Date.now() })}
-      ></Button>
     </View>
   );
 };

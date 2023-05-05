@@ -3,6 +3,8 @@ import SignInScreen from '../screens/SignInScreen';
 import ListScreen from '../screens/ListScreen';
 import { PRIMARY, WHITE } from '../color';
 import HeaderLeftButton from '../components/HeaderLeftButton';
+import HeaderRightButton from '../components/HeaderRightButton';
+import SettingsScreen from '../screens/SettingsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,8 +22,17 @@ const AuthStack = () => {
         headerLeft: HeaderLeftButton,
       }}
     >
-      <Stack.Screen name={'List'} component={ListScreen} />
-      <Stack.Screen name={'Home'} component={SignInScreen} />
+      <Stack.Screen
+        name={'List'}
+        component={ListScreen}
+        options={{ headerRight: HeaderRightButton }}
+      />
+      <Stack.Screen
+        name={'Home'}
+        component={SignInScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name={'Settings'} component={SettingsScreen} />
     </Stack.Navigator>
   );
 };
