@@ -10,7 +10,6 @@ const Stack = createNativeStackNavigator();
 const MainStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName={'List'}
       screenOptions={{
         contentStyle: { backgroundColor: WHITE },
         headerTitleAlign: 'center',
