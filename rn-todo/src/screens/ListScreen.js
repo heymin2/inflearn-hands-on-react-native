@@ -1,5 +1,14 @@
-import { FlatList } from 'react-native';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { memo } from 'react';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
+
+const ListItem = memo(({ item }) => {
+  console.log(item.id);
+  return (
+    <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+      <Text style={{ fontSize: 20 }}>{item.task}</Text>
+    </View>
+  );
+});
 
 const ListScreen = () => {
   const todos = [];
@@ -10,29 +19,10 @@ const ListScreen = () => {
   return (
     <FlatList
       data={todos}
-      renderItem={({ item }) => {
-        console.log(item.id);
-        return (
-          <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-            <Text style={{ fontSize: 20 }}>{item.task}</Text>
-          </View>
-        );
-      }}
+      renderItem={({ item }) => <ListItem item={item} />}
       keyExtractor={(item) => item.id.toString()}
+      windowSize={5} // 이전 :2, 현재:1, 다음: 2
     />
-    // <ScrollView style={styles.container}>
-    //   {todos.map((item) => {
-    //     console.log(item.id);
-    //     return (
-    //       <View
-    //         key={item.id}
-    //         style={{ paddingHorizontal: 20, paddingVertical: 10 }}
-    //       >
-    //         <Text style={{ fontSize: 20 }}>{item.task}</Text>
-    //       </View>
-    //     );
-    //   })}
-    // </ScrollView>
   );
 };
 
