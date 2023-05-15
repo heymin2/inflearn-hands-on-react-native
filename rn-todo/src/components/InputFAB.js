@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TextInput,
   useWindowDimensions,
-  View,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useRef, useState } from 'react';
@@ -22,6 +21,11 @@ const InputFAB = () => {
   const windowWidth = useWindowDimensions().width;
   const [keyboardHeight, setKeyboardHeight] = useState(BOTTOM); // 초깃값 30해야함, bottom이 30인거임
   const inputWidth = useRef(new Animated.Value(BOTTOM_WIDTH)).current; // 플러스 버튼과 같은 60, 매번 current 안붙이기 위해 current 사용
+  const buttonRotaion = useRef(new Animated.Value(0)).current;
+  const spin = buttonRotaion.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '315deg'],
+  });
 
   const open = () => {
     setIsOpened(true);
@@ -32,6 +36,11 @@ const InputFAB = () => {
     }).start(() => {
       inputRef.current.focus(); // 애니메이션이 끝나고 포커즈가 가도록 설정
     });
+    Animated.spring(buttonRotaion, {
+      toValue: 1,
+      useNativeDriver: false,
+      bounciness: 20, // 값이 클수록 스프링이 많이 튐
+    }).start();
   };
 
   const close = () => {
@@ -43,21 +52,28 @@ const InputFAB = () => {
     }).start(() => {
       inputRef.current.blur();
     });
+    Animated.spring(buttonRotaion, {
+      toValue: 0,
+      useNativeDriver: false,
+      bounciness: 20,
+    }).start();
   };
 
   const onPressButton = () => (isOpened ? close() : open());
 
   useEffect(() => {
-    const show = Keyboard.addListener('keyboardWillShow', (e) => {
-      setKeyboardHeight(e.endCoordinates.height + 10); // 키보드 보일때는 키보드 높이
-    });
-    const hide = Keyboard.addListener('keyboardWillHide', () => {
-      setKeyboardHeight(BOTTOM); // 키보드 안보일때는 원래 높이
-    });
-    return () => {
-      show.remove();
-      hide.remove();
-    };
+    if (Platform.OS === 'ios') {
+      const show = Keyboard.addListener('keyboardWillShow', (e) => {
+        setKeyboardHeight(e.endCoordinates.height + 10); // 키보드 보일때는 키보드 높이
+      });
+      const hide = Keyboard.addListener('keyboardWillHide', () => {
+        setKeyboardHeight(BOTTOM); // 키보드 안보일때는 원래 높이
+      });
+      return () => {
+        show.remove();
+        hide.remove();
+      };
+    }
   }, []);
 
   return (
@@ -87,16 +103,23 @@ const InputFAB = () => {
         />
       </Animated.View>
 
-      <Pressable
-        onPress={onPressButton}
-        style={({ pressed }) => [
+      <Animated.View
+        style={[
           styles.container,
-          { bottom: keyboardHeight },
-          pressed && { backgroundColor: PRIMARY.DARK },
+          { bottom: keyboardHeight, transform: [{ rotate: spin }] },
         ]}
       >
-        <MaterialCommunityIcons name="plus" size={24} color={WHITE} />
-      </Pressable>
+        <Pressable
+          onPress={onPressButton}
+          style={({ pressed }) => [
+            styles.container,
+            { right: 0 },
+            pressed && { backgroundColor: PRIMARY.DARK },
+          ]}
+        >
+          <MaterialCommunityIcons name="plus" size={24} color={WHITE} />
+        </Pressable>
+      </Animated.View>
     </>
   );
 };
@@ -104,7 +127,6 @@ const InputFAB = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: BOTTOM,
     right: 10,
     width: BOTTOM_WIDTH,
     height: BOTTOM_WIDTH,
