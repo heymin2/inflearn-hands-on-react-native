@@ -25,12 +25,24 @@ const InputFAB = () => {
 
   const open = () => {
     setIsOpened(true);
-    inputRef.current.focus();
+    Animated.timing(inputWidth, {
+      toValue: windowWidth - 20,
+      useNativeDriver: false, // 레이아웃 변경하는 애니메이션 효과에서는 반드시 false. width를 변경 = 레이아웃 변경.
+      duration: 300, // 애니메이션 시간. default값은 500
+    }).start(() => {
+      inputRef.current.focus(); // 애니메이션이 끝나고 포커즈가 가도록 설정
+    });
   };
 
   const close = () => {
     setIsOpened(false);
-    inputRef.current.blur();
+    Animated.timing(inputWidth, {
+      toValue: BOTTOM_WIDTH,
+      useNativeDriver: false,
+      duration: 300,
+    }).start(() => {
+      inputRef.current.blur();
+    });
   };
 
   const onPressButton = () => (isOpened ? close() : open());
@@ -54,8 +66,11 @@ const InputFAB = () => {
         style={[
           styles.container,
           styles.shadow,
-          { bottom: keyboardHeight, alignItems: 'flex-start' },
-          isOpened && { width: windowWidth - 20 },
+          {
+            bottom: keyboardHeight,
+            alignItems: 'flex-start',
+            width: inputWidth,
+          },
         ]}
       >
         <TextInput
