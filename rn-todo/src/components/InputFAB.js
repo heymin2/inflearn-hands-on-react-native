@@ -10,11 +10,12 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useRef, useState } from 'react';
 import { BLACK, PRIMARY, WHITE } from '../color';
+import PropTypes from 'prop-types';
 
 const BOTTOM = 30;
 const BOTTOM_WIDTH = 60;
 
-const InputFAB = () => {
+const InputFAB = ({ onInsert }) => {
   const [text, setText] = useState('');
   const [isOpened, setIsOpened] = useState(false);
   const inputRef = useRef(null);
@@ -51,6 +52,7 @@ const InputFAB = () => {
       duration: 300,
     }).start(() => {
       inputRef.current.blur();
+      setText('');
     });
     Animated.spring(buttonRotaion, {
       toValue: 0,
@@ -60,6 +62,12 @@ const InputFAB = () => {
   };
 
   const onPressButton = () => (isOpened ? close() : open());
+  const onPressInsert = () => {
+    const task = text.trim();
+    if (task) {
+      onInsert(task);
+    }
+  };
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -100,9 +108,9 @@ const InputFAB = () => {
           keyboardAppearance={'light'}
           returnKeyType={'done'}
           onBlur={close}
+          onSubmitEditing={onPressInsert}
         />
       </Animated.View>
-
       <Animated.View
         style={[
           styles.container,
@@ -122,6 +130,10 @@ const InputFAB = () => {
       </Animated.View>
     </>
   );
+};
+
+InputFAB.propTypes = {
+  onInsert: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

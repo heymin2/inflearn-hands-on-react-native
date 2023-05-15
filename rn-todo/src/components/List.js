@@ -10,7 +10,7 @@ const Separator = () => {
 const List = ({ data }) => {
   return (
     <FlatList
-      data={todos}
+      data={data}
       renderItem={({ item }) => <ListItem item={item} />}
       windowSize={5} // 이전 :2, 현재:1, 다음: 2
       ItemSeparatorComponent={Separator}
