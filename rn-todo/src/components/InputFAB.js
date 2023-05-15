@@ -1,9 +1,9 @@
 import {
+  Animated,
   Keyboard,
   Platform,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   useWindowDimensions,
   View,
@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import { BLACK, PRIMARY, WHITE } from '../color';
 
 const BOTTOM = 30;
+const BOTTOM_WIDTH = 60;
 
 const InputFAB = () => {
   const [text, setText] = useState('');
@@ -20,6 +21,7 @@ const InputFAB = () => {
   const inputRef = useRef(null);
   const windowWidth = useWindowDimensions().width;
   const [keyboardHeight, setKeyboardHeight] = useState(BOTTOM); // 초깃값 30해야함, bottom이 30인거임
+  const inputWidth = useRef(new Animated.Value(BOTTOM_WIDTH)).current; // 플러스 버튼과 같은 60, 매번 current 안붙이기 위해 current 사용
 
   const open = () => {
     setIsOpened(true);
@@ -48,7 +50,7 @@ const InputFAB = () => {
 
   return (
     <>
-      <View
+      <Animated.View
         style={[
           styles.container,
           styles.shadow,
@@ -68,7 +70,7 @@ const InputFAB = () => {
           returnKeyType={'done'}
           onBlur={close}
         />
-      </View>
+      </Animated.View>
 
       <Pressable
         onPress={onPressButton}
@@ -89,9 +91,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: BOTTOM,
     right: 10,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: BOTTOM_WIDTH,
+    height: BOTTOM_WIDTH,
+    borderRadius: BOTTOM_WIDTH / 2,
     backgroundColor: PRIMARY.DEFAULT,
     justifyContent: 'center',
     alignItems: 'center',
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
   input: {
     color: WHITE,
     paddingLeft: 20,
-    paddingRight: 70,
+    paddingRight: BOTTOM_WIDTH + 10,
   },
   shadow: {
     shadowColor: BLACK,
