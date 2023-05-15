@@ -1,4 +1,5 @@
 import {
+  Keyboard,
   Pressable,
   StyleSheet,
   Text,
@@ -7,14 +8,17 @@ import {
   View,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PRIMARY, WHITE } from '../color';
+
+const BOTTOM = 30;
 
 const InputFAB = () => {
   const [text, setText] = useState('');
   const [isOpened, setIsOpened] = useState(false);
   const inputRef = useRef(null);
   const windowWidth = useWindowDimensions().width;
+  const [keyboardHeight, setKeyboardHeight] = useState(BOTTOM); // 초깃값 30해야함, bottom이 30인거임
 
   const open = () => {
     setIsOpened(true);
@@ -28,9 +32,28 @@ const InputFAB = () => {
 
   const onPressButton = () => (isOpened ? close() : open());
 
+  useEffect(() => {
+    const show = Keyboard.addListener('keyboardWillShow', (e) => {
+      setKeyboardHeight(e.endCoordinates.height + 10); // 키보드 보일때는 키보드 높이
+    });
+    const hide = Keyboard.addListener('keyboardWillHide', () => {
+      setKeyboardHeight(BOTTOM); // 키보드 안보일때는 원래 높이
+    });
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+
   return (
     <>
-      <View style={[styles.container, isOpened && { width: windowWidth - 20 }]}>
+      <View
+        style={[
+          styles.container,
+          { bottom: keyboardHeight, alignItems: 'flex-start' },
+          isOpened && { width: windowWidth - 20 },
+        ]}
+      >
         <TextInput
           ref={inputRef}
           value={text}
@@ -49,6 +72,7 @@ const InputFAB = () => {
         onPress={onPressButton}
         style={({ pressed }) => [
           styles.container,
+          { bottom: keyboardHeight },
           pressed && { backgroundColor: PRIMARY.DARK },
         ]}
       >
@@ -61,7 +85,7 @@ const InputFAB = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 30,
+    bottom: BOTTOM,
     right: 10,
     width: 60,
     height: 60,
