@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Button';
 import SafeInputView from '../components/SafeInputView';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import TextButton from '../components/TextButton';
+import { useNavigation } from '@react-navigation/native';
+import { AuthRoutes } from '../navigations/routes';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
@@ -13,6 +16,7 @@ const SignInScreen = () => {
   const [disabled, setDisabled] = useState(true);
 
   const { top } = useSafeAreaInsets();
+  const { navigate } = useNavigation(); // navigation으로도 가능한데 navigate만 필요하니까 {navigate}만 받아옴
 
   useEffect(() => {
     setDisabled(!email || !password);
@@ -51,6 +55,12 @@ const SignInScreen = () => {
           isLoading={isLoading}
           onPress={onSubmit}
           styles={{ container: { marginTop: 20 } }}
+        />
+        <TextButton
+          title={'SIGNUP'}
+          onPress={() => {
+            navigate(AuthRoutes.SIGN_UP);
+          }}
         />
       </View>
     </SafeInputView>
