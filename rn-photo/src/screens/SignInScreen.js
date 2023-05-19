@@ -1,8 +1,9 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { AuthRoutes } from '../navigations/routes';
 import Input, { InputTypes } from '../components/Input';
 import { useState } from 'react';
+import Button from '../components/Button';
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -11,16 +12,6 @@ const SignInScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>SignInScreen</Text>
-      <Button
-        title="signup"
-        onPress={() => navigation.navigate(AuthRoutes.SIGN_UP)}
-      />
-      {/* <Input
-        title={'EMAIL'}
-        placeholder={'your@email.com'}
-        iconName={'email'}
-        keyboardType={KeyboardTypes.EMAIL}
-      /> */}
       <Input
         inputType={InputTypes.EMAIL}
         value={email}
@@ -33,6 +24,21 @@ const SignInScreen = ({ navigation }) => {
         inputType={InputTypes.PASSWORD}
         value={password}
         onChangeText={(text) => setPassword(text.trim())}
+        styles={{
+          container: { paddingHorizontal: 20, marginBottom: 20 },
+        }}
+      />
+      <Button
+        title={'SIGNIN'}
+        onPress={() => {
+          navigation.navigate(AuthRoutes.SIGN_UP);
+        }}
+        styles={{
+          container: {
+            paddingHorizontal: 20,
+            marginTop: 20,
+          },
+        }}
       />
     </View>
   );
