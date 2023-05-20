@@ -1,5 +1,5 @@
 import { Image, Keyboard, StatusBar, StyleSheet, View } from 'react-native';
-import Input, { InputTypes } from '../components/Input';
+import Input, { InputTypes, ReturnKeyTypes } from '../components/Input';
 import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Button';
 import SafeInputView from '../components/SafeInputView';
@@ -53,6 +53,7 @@ const SignInScreen = () => {
             onChangeText={(text) => setEmail(text.trim())}
             onSubmitEditing={() => passwordRef.current.focus()}
             styles={{ container: { marginBottom: 20 } }}
+            returnKeyType={ReturnKeyTypes.NEXT}
           />
           <Input
             ref={passwordRef}
@@ -61,6 +62,7 @@ const SignInScreen = () => {
             onChangeText={(text) => setPassword(text.trim())}
             onSubmitEditing={onSubmit}
             styles={{ container: { marginBottom: 20 } }}
+            returnKeyType={ReturnKeyTypes.DONE}
           />
           <Button
             title={'SIGNIN'}
