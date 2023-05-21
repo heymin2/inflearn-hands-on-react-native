@@ -40,6 +40,12 @@ const SignInScreen = () => {
     }
   };
 
+  useEffect(() => {
+    console.log('SignIn Mount');
+
+    return () => console.log('SignIn Unmount');
+  }, []);
+
   return (
     <SafeInputView>
       <StatusBar style={'light'} />
