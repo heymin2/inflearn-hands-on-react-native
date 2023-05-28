@@ -1,9 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { useReducer } from 'react';
 import Button from './components/Button';
 
-const init = 0;
+const init = { count: 0 };
 
 const CountType = {
   INCREMENt: 'INCREMENT',
@@ -11,11 +10,14 @@ const CountType = {
 };
 
 const reducer = (state, action) => {
-  switch (action.type) {
+  switch (action.key) {
     case CountType.INCREMENt:
-      return state + 1;
+      //   return state + action.value;
+      state.count = state.count + 1;
+      return state; // 화면 변경되지 않음, 값은 변경됨
     case CountType.DECREMENT:
-      return state - 1;
+      //   return state - action.value;
+      return { count: state.count - 1 };
     default:
       return state;
   }
@@ -26,21 +28,17 @@ const ReducerTest = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{result}</Text>
+      <Text style={styles.title}>{result.count}</Text>
       <Button
         title={'+'}
-        onPress={() => dispatch({ type: CountType.INCREMENt })}
+        onPress={() => dispatch({ key: CountType.INCREMENt, value: 2 })}
       />
       <Button
         title={'-'}
-        onPress={() => dispatch({ type: CountType.DECREMENT })}
+        onPress={() => dispatch({ key: CountType.DECREMENT, value: 1 })}
       />
     </View>
   );
-};
-
-ReducerTest.propTypes = {
-  //PropTypes
 };
 
 const styles = StyleSheet.create({
