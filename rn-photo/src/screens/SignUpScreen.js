@@ -42,12 +42,6 @@ const SignUpScreen = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('SignUp Mount');
-
-    return () => console.log('SignUp Unmount');
-  }, []);
-
   return (
     <SafeInputView>
       <StatusBar style={'light'} />
