@@ -39,7 +39,8 @@ const ListScreen = () => {
 
   const onInsert = (task) => {
     const id = nanoid();
-    const newTask = { id, task, isDone: false };
+    const currentTime = new Date().toLocaleTimeString();
+    const newTask = { id, task, currentTime, isDone: false };
     save([newTask, ...todos]);
     setTodos((prev) => [newTask, ...prev]);
   };

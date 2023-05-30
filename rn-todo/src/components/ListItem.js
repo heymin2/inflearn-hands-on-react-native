@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import PropTypes from 'prop-types';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BLACK, DANGER, PRIMARY } from '../color';
 
@@ -18,6 +18,7 @@ const ListItem = memo(({ item, onDelete, onToggle }) => {
       </Pressable>
       <View style={styles.task}>
         <Text>{item.task}</Text>
+        <Text>{item.currentTime}</Text>
       </View>
       <Pressable onPress={() => onDelete(item.id)} hitSlop={10}>
         <MaterialCommunityIcons
