@@ -21,6 +21,7 @@ import {
   authFormReducer,
   initAuthForm,
 } from '../reducers/authFormReducer';
+import { signIn } from '../api/auth';
 
 const SignInScreen = () => {
   const passwordRef = useRef();
@@ -30,11 +31,12 @@ const SignInScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
   const { navigate } = useNavigation(); // navigation으로도 가능한데 navigate만 필요하니까 {navigate}만 받아옴
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     Keyboard.dismiss();
     if (!form.disabled && !form.isLoading) {
       dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
-      console.log(form.email, form.password);
+      const user = await signIn(form);
+      console.log(user);
       dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
     }
   };
