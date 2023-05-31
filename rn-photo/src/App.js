@@ -4,6 +4,7 @@ import * as SpalshScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Asset } from 'expo-asset';
+import { initFirebase } from './api/firebase';
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -12,6 +13,7 @@ const App = () => {
       try {
         await SpalshScreen.preventAutoHideAsync();
         await Asset.fromModule(require('../assets/cover.png')).downloadAsync(); // 캐싱
+        initFirebase();
       } catch (e) {
         // eslint-disabled-next-line no-console
         console.log(e);
