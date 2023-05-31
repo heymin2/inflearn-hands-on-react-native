@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Keyboard,
   ScrollView,
@@ -21,7 +22,7 @@ import {
   authFormReducer,
   initAuthForm,
 } from '../reducers/authFormReducer';
-import { signIn } from '../api/auth';
+import { getAuthErrorMessages, signIn } from '../api/auth';
 
 const SignInScreen = () => {
   const passwordRef = useRef();
@@ -35,8 +36,13 @@ const SignInScreen = () => {
     Keyboard.dismiss();
     if (!form.disabled && !form.isLoading) {
       dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
-      const user = await signIn(form);
-      console.log(user);
+      try {
+        const user = await signIn(form);
+        console.log(user);
+      } catch (e) {
+        const message = getAuthErrorMessages(e.code);
+        Alert.alert('로그인 실패', message);
+      }
       dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
     }
   };
