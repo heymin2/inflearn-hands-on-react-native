@@ -3,7 +3,6 @@ import {
   Image,
   Keyboard,
   ScrollView,
-  StatusBar,
   StyleSheet,
   View,
 } from 'react-native';
@@ -16,10 +15,11 @@ import TextButton from '../components/TextButton';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AuthRoutes } from '../navigations/routes';
 import HR from '../components/HR';
+import { StatusBar } from 'expo-status-bar';
 import { WHITE } from '../colors';
 import {
-  AuthFormTypes,
   authFormReducer,
+  AuthFormTypes,
   initAuthForm,
 } from '../reducers/authFormReducer';
 import { getAuthErrorMessages, signIn } from '../api/auth';
@@ -31,29 +31,12 @@ const SignInScreen = () => {
   const [form, dispatch] = useReducer(authFormReducer, initAuthForm);
 
   const { top, bottom } = useSafeAreaInsets();
-  const { navigate } = useNavigation(); // navigation으로도 가능한데 navigate만 필요하니까 {navigate}만 받아옴
+  const { navigate } = useNavigation();
   const [, setUser] = useUserState();
-
-  const onSubmit = async () => {
-    Keyboard.dismiss();
-    if (!form.disabled && !form.isLoading) {
-      dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
-      try {
-        const user = await signIn(form);
-        setUser(user);
-      } catch (e) {
-        const message = getAuthErrorMessages(e.code);
-        Alert.alert('로그인 실패', message);
-      }
-      dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
-    }
-  };
 
   useFocusEffect(
     useCallback(() => {
-      return () => {
-        dispatch({ type: AuthFormTypes.RESET });
-      };
+      return () => dispatch({ type: AuthFormTypes.RESET });
     }, [])
   );
 
@@ -67,6 +50,25 @@ const SignInScreen = () => {
     });
   };
 
+  const onSubmit = async () => {
+    Keyboard.dismiss();
+    if (!form.disabled && !form.isLoading) {
+      dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
+      try {
+        const user = await signIn(form);
+        setUser(user);
+      } catch (e) {
+        const message = getAuthErrorMessages(e.code);
+        Alert.alert('로그인 실패', message, [
+          {
+            text: '확인',
+            onPress: () => dispatch({ type: AuthFormTypes.TOGGLE_LOADING }),
+          },
+        ]);
+      }
+    }
+  };
+
   return (
     <SafeInputView>
       <StatusBar style={'light'} />
@@ -78,8 +80,9 @@ const SignInScreen = () => {
             resizeMode={'cover'}
           />
         </View>
+
         <ScrollView
-          style={[styles.form, { paddingBottom: bottom ? bottom : 10 + 40 }]}
+          style={[styles.form, { paddingBottom: bottom ? bottom + 10 : 40 }]}
           contentContainerStyle={{ alignItems: 'center' }}
           bounces={false}
           keyboardShouldPersistTaps={'always'}
@@ -92,6 +95,7 @@ const SignInScreen = () => {
             styles={{ container: { marginBottom: 20 } }}
             returnKeyType={ReturnKeyTypes.NEXT}
           />
+
           <Input
             ref={passwordRef}
             inputType={InputTypes.PASSWORD}
@@ -101,6 +105,7 @@ const SignInScreen = () => {
             styles={{ container: { marginBottom: 20 } }}
             returnKeyType={ReturnKeyTypes.DONE}
           />
+
           <Button
             title={'SIGNIN'}
             disabled={form.disabled}
@@ -108,12 +113,12 @@ const SignInScreen = () => {
             onPress={onSubmit}
             styles={{ container: { marginTop: 20 } }}
           />
+
           <HR text={'OR'} styles={{ container: { marginVertical: 30 } }} />
+
           <TextButton
             title={'SIGNUP'}
-            onPress={() => {
-              navigate(AuthRoutes.SIGN_UP);
-            }}
+            onPress={() => navigate(AuthRoutes.SIGN_UP)}
           />
         </ScrollView>
       </View>
