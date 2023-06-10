@@ -38,7 +38,7 @@ const ListScreen = () => {
   }, []);
 
   const onInsert = (task) => {
-    const id = nanoid();
+    const id = nanoid(); // 안드로이드 안됨
     const currentTime = new Date().toLocaleTimeString();
     const newTask = { id, task, currentTime, isDone: false };
     save([newTask, ...todos]);
